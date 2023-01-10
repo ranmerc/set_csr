@@ -2,6 +2,39 @@
   margin-block: 3.75rem;
   margin-inline: 2rem;
   display: grid;
-  place-content: center;
+  row-gap: 3rem;
   color: var(--clr-3);
+}
+
+.heading {
+  font-family: 'IBM Sans Serif', sans-serif;
+  font-size: 2rem;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  row-gap: 0.8rem;
+  list-style: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.2rem;
+}
+
+.list > li {
+  height: min-content;
+  width: fit-content;
+  padding: 0.4rem 0.8rem;
+  border-radius: 7px;
+  background-color: #90b77d;
+  cursor: pointer;
+}
+
+.newsletterForm {
+  display: grid;
+  place-content: center;
+}
+
+.listContainer {
+  display: grid;
+  row-gap: 1rem;
 }
