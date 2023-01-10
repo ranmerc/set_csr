@@ -1,0 +1,39 @@
+.container {
+  margin: 3.125rem 1rem;
+  display: grid;
+  row-gap: 4rem;
+}
+
+@media (min-width: 600px) {
+  .container {
+    margin-inline: 5rem;
+  }
+}
+
+.newsletter {
+  display: grid;
+  row-gap: 2rem;
+}
+
+.title {
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 2.5rem;
+}
+
+.para {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+.loading {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-content: center;
+}
+
+.newsletterForm {
+  display: grid;
+  place-content: center;
+}
