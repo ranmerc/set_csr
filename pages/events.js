@@ -1,9 +1,28 @@
 import Head from 'next/head';
+import { useEffect, useState } from 'react';
 import EventCardList from '../components/EventCardList/EventCardList';
 import Styles from '../styles/events.module.css';
-import { getEventValues } from './api/get/events';
+import Loading from '../components/Loading/Loading';
 
-export default function Events({ upcomingEvents, pastEvents }) {
+export default function Events() {
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    let active = true;
+
+    fetch('/api/get/events')
+      .then((res) => res.json())
+      .then((data) => {
+        if (active) {
+          setEvents(data.values);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
   return (
     <>
       <Head>
@@ -12,11 +31,31 @@ export default function Events({ upcomingEvents, pastEvents }) {
       <main className={Styles.container}>
         <section className={Styles.subContainer}>
           <h1 className={Styles.heading}>UPCOMING EVENTS</h1>
-          <EventCardList events={upcomingEvents} />
+          {events.length != 0 ? (
+            <EventCardList
+              events={events
+                .filter((event) => {
+                  return event[6] === 'Upcoming';
+                })
+                .map(eventMap)}
+            />
+          ) : (
+            <Loading />
+          )}
         </section>
         <section className={Styles.subContainer}>
           <h1 className={Styles.heading}>PAST EVENTS</h1>
-          <EventCardList events={pastEvents} />
+          {events.length != 0 ? (
+            <EventCardList
+              events={events
+                .filter((event) => {
+                  return event[6] === 'Past';
+                })
+                .map(eventMap)}
+            />
+          ) : (
+            <Loading />
+          )}
         </section>
       </main>
     </>
@@ -36,37 +75,3 @@ const eventMap = (event) => {
     mode: event?.[8] ?? 'Online',
   };
 };
-
-export async function getStaticProps() {
-  try {
-    const events = await getEventValues();
-
-    const upcomingEvents = events
-      .filter((event) => {
-        return event[6] === 'Upcoming';
-      })
-      .map(eventMap);
-
-    const pastEvents = events
-      .filter((event) => {
-        return event[6] === 'Past';
-      })
-      .map(eventMap);
-
-    return {
-      props: {
-        upcomingEvents,
-        pastEvents,
-      },
-    };
-  } catch (e) {
-    console.log(e.message);
-
-    return {
-      props: {
-        upcomingEvents: [],
-        pastEvents: [],
-      },
-    };
-  }
-}
